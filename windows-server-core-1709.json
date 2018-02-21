@@ -7,7 +7,7 @@
   },
   "builders": [
     {
-      "name": "windows-server-core-1709-amd64-libvirt",
+      "name": "windows-server-core-1709-libvirt",
       "type": "qemu",
       "accelerator": "kvm",
       "qemuargs": [
@@ -56,7 +56,7 @@
       ]
     },
     {
-      "name": "windows-server-core-1709-amd64-virtualbox",
+      "name": "windows-server-core-1709-virtualbox",
       "type": "virtualbox-iso",
       "guest_os_type": "Windows2016_64",
       "guest_additions_mode": "attach",
