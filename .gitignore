@@ -1,0 +1,6 @@
+*.box
+output*/
+.vagrant/
+packer_cache/
+drivers/
+isos/
