@@ -2,7 +2,6 @@
 # Required to enable remote powershell from linux/mac
 
 $openSshFilename = 'OpenSSH-Win64.zip'
-# $openSshSetupUrl = "https://www.mls-software.com/files/$openSshSetupFilename"
 $openSshUrl = "https://github.com/PowerShell/Win32-OpenSSH/releases/download/v1.0.0.0/OpenSSH-Win64.zip"
 $openSshHome = 'C:\Program Files\OpenSSH'
 $sshdConfig = "$env:ProgramData\ssh\sshd_config"
@@ -88,8 +87,4 @@ New-NetFirewallRule -Name sshd -DisplayName 'OpenSSH Server (sshd)' -Enabled Tru
 
 Write-Output = "Starting the sshd services..."
 Set-Service sshd -StartupType Automatic
-# Set-Service ssh-agent -StartupType Automatic
 Start-Service sshd
-# Start-Service ssh-agent
-
-# Get-Content C:\PROGRAMDATA\ssh\sshd_config | Where { $_ -notmatch "^Subsystem powershell" } | Set-Content C:\PROGRAMDATA\ssh\sshd_config.new
