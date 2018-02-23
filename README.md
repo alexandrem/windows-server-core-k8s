@@ -68,6 +68,26 @@ cd customize-windows-vagrant
 vagrant up --provider=virtualbox # or --provider=libvirt
 ```
 
+## Build warnings
+
+### Docker hyper-v
+
+Some errors about Hyper-V during Docker EE installation will show.
+
+This is normal for now, packer+qemu doesn't enable nested virtualization (is it possible?)
+
+```
+windows-server-core-1709-libvirt: Installing Docker EE preview...
+    windows-server-core-1709-libvirt: WARNING: A restart is required to enable the one or more features. Please restart your machine.
+    windows-server-core-1709-libvirt: Install-Package : A prerequisite check for the Hyper-V feature failed.
+    windows-server-core-1709-libvirt: 1. Hyper-V cannot be installed: The processor does not have required virtualization capabilities.
+    windows-server-core-1709-libvirt: At C:\Windows\Temp\script-5a907637-3848-8817-1cc6-b042712d42db.ps1:15 char:1
+    windows-server-core-1709-libvirt: + Install-Package -Name docker -ProviderName DockerProvider -RequiredVe ...
+    windows-server-core-1709-libvirt: + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    windows-server-core-1709-libvirt:     + CategoryInfo          : InvalidOperation: (Hyper-V:String) [Install-Package], Exception
+    windows-server-core-1709-libvirt:     + FullyQualifiedErrorId : Alteration_PrerequisiteCheck_Failed,Microsoft.Windows.ServerManager.Commands.AddWindowsF
+    windows-server-core-1709-libvirt:    eatureCommand,Microsoft.PowerShell.PackageManagement.Cmdlets.InstallPackage
+```
 
 ## libvirt
 
