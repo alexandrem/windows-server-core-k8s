@@ -8,6 +8,8 @@ $sshdConfig = "$env:ProgramData\ssh\sshd_config"
 [Reflection.Assembly]::LoadWithPartialName('System.Web') | Out-Null
 $openSshSetup = "C:\Windows\Temp\OpenSSH.zip"
 
+[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
+
 Write-Output "Downloading Win32-OpenSSH..."
 Invoke-WebRequest $openSshUrl -OutFile $openSshSetup
 Add-Type -A System.IO.Compression.FileSystem
