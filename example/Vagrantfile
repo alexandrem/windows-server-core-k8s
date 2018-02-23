@@ -3,10 +3,17 @@ Vagrant.configure(2) do |config|
 
   config.vm.hostname = 'example'
 
+  config.vm.guest = :windows
+  config.vm.communicator = "winrm"
+  config.winrm.username = "vagrant"
+  config.winrm.password = "vagrant"
+
   config.vm.provider 'libvirt' do |lv|
     lv.memory = 2048
     lv.cpus = 2
     lv.keymap = 'pt'
+    lv.nested = true
+    lv.cpu_mode = "host-model"
     config.vm.synced_folder '.', '/vagrant', disabled: true
   end
 
