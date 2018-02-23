@@ -1,10 +1,6 @@
 help:
 	@echo type make build-libvirt or make build-virtualbox
 
-build-libvirt: windows-2016-libvirt.box
-
-build-virtualbox: windows-2016-virtualbox.box
-
 build-windows-server-core-1709-libvirt: windows-server-core-1709-libvirt.box
 
 build-windows-server-core-1709-virtualbox: windows-server-core-1709-virtualbox.box
@@ -12,20 +8,6 @@ build-windows-server-core-1709-virtualbox: windows-server-core-1709-virtualbox.b
 build-core-insider-libvirt: windows-core-insider-2016-libvirt.box
 
 build-core-insider-virtualbox: windows-core-insider-2016-virtualbox.box
-
-windows-2016-libvirt.box: windows-2016.json autounattend.xml Vagrantfile.template *.ps1 drivers
-	rm -f $@
-	packer build -only=windows-2016-libvirt -on-error=abort windows-2016.json
-	@echo BOX successfully built!
-	@echo to add to local vagrant install do:
-	@echo vagrant box add -f windows-2016 $@
-
-windows-2016-virtualbox.box: windows-2016.json autounattend.xml Vagrantfile.template *.ps1
-	rm -f $@
-	packer build -only=windows-2016-virtualbox -on-error=abort windows-2016.json
-	@echo BOX successfully built!
-	@echo to add to local vagrant install do:
-	@echo vagrant box add -f windows-2016 $@
 
 windows-server-core-1709-libvirt.box: windows-server-core-1709.json windows-server-core-1709/autounattend.xml Vagrantfile.template *.ps1 drivers
 	rm -f $@
