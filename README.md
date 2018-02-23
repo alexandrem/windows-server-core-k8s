@@ -18,12 +18,6 @@ Virtualbox images cannot currently be used for kubelet because of lack of suppor
 error: failed to run Kubelet: unable to read physical memory
 ```
 
-
-## TODOs
-
-- Output qcow2 images ready for openstack
-
-
 # Usage
 
 Install [VirtualBox](https://www.virtualbox.org/) (or [libvirt](https://libvirt.org/) on Linux based systems), [packer](https://www.packer.io/), [packer-provisioner-windows-update plugin](https://github.com/rgl/packer-provisioner-windows-update) and [vagrant](https://www.vagrantup.com/).
