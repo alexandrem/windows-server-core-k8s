@@ -7,7 +7,7 @@
   },
   "builders": [
     {
-      "name": "windows-core-insider-2016-amd64-libvirt",
+      "name": "windows-core-insider-2016-libvirt",
       "type": "qemu",
       "accelerator": "kvm",
       "qemuargs": [
