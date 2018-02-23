@@ -123,6 +123,19 @@
       "script": "scripts/sshd.ps1"
     },
     {
+      "type": "file",
+      "source": "./scripts/cloudbase-init/cloudbase-init.conf",
+      "destination": "C:/Windows/Temp/cloudbase-init.conf"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/cloudbase-init/install.ps1"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/cloudbase-init/cloudbase-config.ps1"
+    },
+    {
       "type": "powershell",
       "script": "scripts/inspect.ps1"
     },
