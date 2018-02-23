@@ -1,6 +1,3 @@
-# to fix Swift HTTPS certificate
-[System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true}
-
 Write-Output "Downloading Cloudbase-Init..."
 $cbiUrl = "https://cloudbase.it/downloads/CloudbaseInitSetup_Stable_x64.msi"
 Invoke-WebRequest $cbiUrl -OutFile "C:\Windows\Temp\CloudbaseInitSetup.msi" -UseBasicParsing
