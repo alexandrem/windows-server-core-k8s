@@ -3,7 +3,7 @@
 
 Write-Output "Downloading Cloudbase-Init..."
 $cbiUrl = "https://cloudbase.it/downloads/CloudbaseInitSetup_Stable_x64.msi"
-Invoke-WebRequest $cbiUrl -OutFile "C:\Windows\Temp\CloudbaseInitSetup.msi"
+Invoke-WebRequest $cbiUrl -OutFile "C:\Windows\Temp\CloudbaseInitSetup.msi" -UseBasicParsing
 
 Write-Output "Installing Cloudbase-Init..."
 $serialPortName = @(Get-WmiObject Win32_SerialPort)[0].DeviceId
