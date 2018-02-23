@@ -62,3 +62,8 @@ drivers:
 	wget -P drivers.tmp https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.141-1/virtio-win-0.1.141.iso
 	7z x -odrivers.tmp drivers.tmp/virtio-win-*.iso
 	mv drivers.tmp drivers
+
+windows-server-core-1709.qcow2: windows-server-core-1709-libvirt.box
+	set -e; \
+	qemu-img convert -O qcow2 $< $@ -o preallocation=metadata
+
