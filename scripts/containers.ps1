@@ -1,3 +1,7 @@
+#
+# Configure Windows server for containers
+#
+
 # Install-Module -Name DockerMsftProvider -Repository PSGallery -Force
 # Install-Package -Name Docker -ProviderName DockerMsftProvider
 
