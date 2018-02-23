@@ -27,3 +27,6 @@ Start-Process -FilePath "$7zExe" -Wait -ArgumentList "x kubernetes-node-windows-
 mv kubernetes\node\bin\*.exe .
 Remove-Item -Recurse -Force kubernetes
 Remove-Item -Recurse -Force kubernetes-node-windows-amd64*
+
+# Turn off Firewall to enable pods to talk to service endpoints. (Kubelet should eventually do this)
+netsh advfirewall set allprofiles state off
