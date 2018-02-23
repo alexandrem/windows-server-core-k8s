@@ -1,4 +1,5 @@
 *.box
+*.qcow2
 output*/
 .vagrant/
 packer_cache/
