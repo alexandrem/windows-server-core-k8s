@@ -1,6 +1,6 @@
 {
   "variables": {
-    "disk_size": "61440",
+    "disk_size": "45000",
     "iso_url": "./isos/SW_DVD9_Win_Server_STD_CORE_1709_64Bit_English_DC_STD_MLF_X21-49499.ISO",
     "iso_checksum": "7c73ce30c3975652262f794fc35127b5",
     "iso_checksum_type": "md5"

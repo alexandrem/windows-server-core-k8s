@@ -1,6 +1,6 @@
 {
   "variables": {
-    "disk_size": "61440",
+    "disk_size": "45000",
     "iso_url": "./isos/Windows_InsiderPreview_Server_16278.iso",
     "iso_checksum": "f87ebde2f4dc7094d2e01819d370cb8d06d2bcde520d3bdf9e8ce7e70a8ea5da",
     "iso_checksum_type": "sha256"
