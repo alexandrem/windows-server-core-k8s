@@ -108,6 +108,7 @@
     {
       "type": "vagrant",
       "output": "{{.BuildName}}.box",
+      "keep_input_artifact": true,
       "vagrantfile_template": "Vagrantfile.template"
     }
   ]

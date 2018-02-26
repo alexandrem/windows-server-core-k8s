@@ -45,7 +45,20 @@ drivers:
 	7z x -odrivers.tmp drivers.tmp/virtio-win-*.iso
 	mv drivers.tmp drivers
 
-windows-server-core-1709.qcow2: windows-server-core-1709-libvirt.box
-	set -e; \
-	qemu-img convert -O qcow2 $< $@ -o preallocation=metadata
+.PHONY: clean
+clean:
+	rm -r output-*
 
+output-windows-core-insider-2016-libvirt: windows-core-insider-2016-libvirt.box
+
+output-windows-server-core-1709-libvirt: windows-server-core-1709-libvirt.box
+
+windows-core-insider-2016.qcow2: output-windows-core-insider-2016-libvirt
+	@set -e; \
+	mv $</* $@; \
+	rm -r $< 
+
+windows-server-core-1709.qcow2: output-windows-server-core-1709-libvirt
+	@set -e; \
+	mv $</* $@; \
+	rm -r $< 
