@@ -47,7 +47,9 @@ drivers:
 
 .PHONY: clean
 clean:
-	rm -r output-*
+	rm -fr output-*
+	rm -f *.box
+	rm -f *.qcow2
 
 output-windows-core-insider-2016-libvirt: windows-core-insider-2016-libvirt.box
 
