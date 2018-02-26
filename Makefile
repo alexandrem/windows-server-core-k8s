@@ -37,6 +37,13 @@ windows-core-insider-2016-virtualbox.box: windows-core-insider-2016.json windows
 	@echo to add to local vagrant install do:
 	@echo vagrant box add -f windows-core-insider-2016 $@
 
+windows-server-insider-preview-libvirt.box: windows-server-insider-preview.json windows-server-insider-preview/autounattend.xml Vagrantfile.template *.ps1 drivers
+	rm -f $@
+	packer build -only=windows-server-insider-preview-libvirt -on-error=abort windows-server-insider-preview.json
+	@echo BOX successfully built!
+	@echo to add to local vagrant install do:
+	@echo vagrant box add -f windows-server-insider-preview $@
+
 drivers:
 	rm -rf drivers.tmp
 	mkdir -p drivers.tmp
@@ -51,16 +58,17 @@ clean:
 	rm -f *.box
 	rm -f *.qcow2
 
-output-windows-core-insider-2016-libvirt: windows-core-insider-2016-libvirt.box
-
-output-windows-server-core-1709-libvirt: windows-server-core-1709-libvirt.box
-
-windows-core-insider-2016.qcow2: output-windows-core-insider-2016-libvirt
+windows-server-core-1709.qcow2: windows-server-core-1709-libvirt.box
 	@set -e; \
-	mv $</* $@; \
-	rm -r $< 
+	mv output-windows-server-core-1709-libvirt/* $@; \
+	rm -r output-windows-server-core-1709-libvirt
 
-windows-server-core-1709.qcow2: output-windows-server-core-1709-libvirt
+windows-core-insider-2016.qcow2: windows-core-insider-2016-libvirt.box
 	@set -e; \
-	mv $</* $@; \
-	rm -r $< 
+	mv output-windows-core-insider-2016-libvirt/* $@; \
+	rm -r output-windows-core-insider-2016-libvirt
+
+windows-server-insider-preview.qcow2: windows-server-insider-preview-libvirt.box
+	@set -e; \
+	mv output-windows-server-insider-preview-libvirt/* $@; \
+	rm -r output-windows-server-insider-preview-libvirt

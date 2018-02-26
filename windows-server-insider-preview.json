@@ -1,0 +1,160 @@
+{
+  "variables": {
+    "disk_size": "45000",
+    "iso_url": "./isos/Windows_InsiderPreview_Server_17093.iso",
+    "iso_checksum": "ec6451c80b0e35ca12235b6546da6259",
+    "iso_checksum_type": "md5"
+  },
+  "builders": [
+    {
+      "name": "windows-server-insider-preview-libvirt",
+      "type": "qemu",
+      "accelerator": "kvm",
+      "qemuargs": [
+        ["-m", "12048"],
+        ["-cpu", "host"],
+        ["-smp", "2"],
+        ["-soundhw", "hda"],
+        ["-usbdevice", "tablet"],
+        ["-device", "virtio-net,netdev=user.0"],
+        ["-vga", "qxl"],
+        ["-device", "virtio-serial-pci"],
+        ["-chardev", "socket,path=/tmp/{{.Name}}-qga.sock,server,nowait,id=qga0"],
+        ["-device", "virtserialport,chardev=qga0,name=org.qemu.guest_agent.0"],
+        ["-chardev", "spicevmc,id=spicechannel0,name=vdagent"],
+        ["-device", "virtserialport,chardev=spicechannel0,name=com.redhat.spice.0"],
+        ["-spice", "unix,addr=/tmp/{{.Name}}-spice.socket,disable-ticketing"]
+      ],
+      "headless": true,
+      "format": "qcow2",
+      "disk_size": "{{user `disk_size`}}",
+      "disk_interface": "virtio",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "communicator": "winrm",
+      "winrm_username": "vagrant",
+      "winrm_password": "vagrant",
+      "winrm_timeout": "2h",
+      "shutdown_command": "shutdown /s /t 0 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "http_directory": ".",
+      "floppy_files": [
+        "windows-server-insider-preview/autounattend.xml",
+        "winrm.ps1",
+        "drivers/vioserial/2k16/amd64/*.cat",
+        "drivers/vioserial/2k16/amd64/*.inf",
+        "drivers/vioserial/2k16/amd64/*.sys",
+        "drivers/viostor/2k16/amd64/*.cat",
+        "drivers/viostor/2k16/amd64/*.inf",
+        "drivers/viostor/2k16/amd64/*.sys",
+        "drivers/NetKVM/2k16/amd64/*.cat",
+        "drivers/NetKVM/2k16/amd64/*.inf",
+        "drivers/NetKVM/2k16/amd64/*.sys",
+        "drivers/qxldod/2k16/amd64/*.cat",
+        "drivers/qxldod/2k16/amd64/*.inf",
+        "drivers/qxldod/2k16/amd64/*.sys"
+      ]
+    },
+    {
+      "name": "windows-server-insider-preview-virtualbox",
+      "type": "virtualbox-iso",
+      "guest_os_type": "Windows2016_64",
+      "guest_additions_mode": "attach",
+      "headless": true,
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "2048"],
+        ["modifyvm", "{{.Name}}", "--cpus", "2"],
+        ["modifyvm", "{{.Name}}", "--vram", "64"],
+        ["modifyvm", "{{.Name}}", "--audio", "none"],
+        ["modifyvm", "{{.Name}}", "--nictype1", "82540EM"],
+        ["modifyvm", "{{.Name}}", "--nictype2", "82540EM"],
+        ["modifyvm", "{{.Name}}", "--nictype3", "82540EM"],
+        ["modifyvm", "{{.Name}}", "--nictype4", "82540EM"]
+      ],
+      "disk_size": "{{user `disk_size`}}",
+      "hard_drive_interface": "sata",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "communicator": "winrm",
+      "winrm_username": "vagrant",
+      "winrm_password": "vagrant",
+      "winrm_timeout": "2h",
+      "shutdown_command": "shutdown /s /t 0 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "floppy_files": [
+        "windows-server-insider-preview/autounattend.xml",
+        "winrm.ps1"
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "powershell",
+      "script": "scripts/disable-windows-updates.ps1"
+    },
+    {
+      "type": "powershell",
+      "inline": "Uninstall-WindowsFeature Windows-Defender-Features"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/virtualbox-prevent-vboxsrv-resolution-delay.ps1"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/containers.ps1"
+    },
+    {
+      "type": "windows-restart"
+    },
+    {
+      "type": "windows-update"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/provision.ps1"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/kubernetes.ps1"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/sshd.ps1"
+    },
+    {
+      "type": "file",
+      "source": "./scripts/cloudbase-init/cloudbase-init.conf",
+      "destination": "C:/Windows/Temp/cloudbase-init.conf"
+    },
+    {
+      "type": "file",
+      "source": "./scripts/cloudbase-init/cloudbase-init-unattend.conf",
+      "destination": "C:/Windows/Temp/cloudbase-init-unattend.conf"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/cloudbase-init/install.ps1"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/cloudbase-init/cloudbase-config.ps1"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/inspect.ps1"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/cleanup.ps1"
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "{{.BuildName}}.box",
+      "keep_input_artifact": true,
+      "vagrantfile_template": "Vagrantfile.template"
+    }
+  ]
+}
