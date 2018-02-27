@@ -18,7 +18,7 @@ Virtualbox images cannot currently be used for kubelet because of lack of suppor
 error: failed to run Kubelet: unable to read physical memory
 ```
 
-# Usage
+# Prerequisites
 
 Install [VirtualBox](https://www.virtualbox.org/) (or [libvirt](https://libvirt.org/) on Linux based systems), [packer](https://www.packer.io/), [packer-provisioner-windows-update plugin](https://github.com/rgl/packer-provisioner-windows-update) and [vagrant](https://www.vagrantup.com/).
 If you are using Windows and [Chocolatey](https://chocolatey.org/), you can install everything with:
@@ -27,28 +27,18 @@ If you are using Windows and [Chocolatey](https://chocolatey.org/), you can inst
 choco install -y virtualbox packer packer-provisioner-windows-update vagrant
 ```
 
+# Usage
+
 To build the base box based on the [Windows Server 2016 Evaluation](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2016) ISO run:
 
 ```bash
-packer build -only=windows-2016-amd64-virtualbox windows-2016.json # or make build-libvirt
+make build-windows-server-core-1709-libvirt
 ```
-
-If you want to use your own ISO, run the following instead:
-
-```bash
-packer build -var iso_url=<ISO_URL> -var iso_checksum=<ISO_SHA256_CHECKSUM> -only=windows-2016-amd64-virtualbox windows-2016.json
-```
-
-**NB** if the build fails with something like `Post-processor failed: write /tmp/packer073329394/packer-windows-2016-amd64-virtualbox-1505050546-disk001.vmdk: no space left on device` you need to increase your temporary partition size or change its location [as described in the packer TMPDIR/TMP environment variable documentation](https://www.packer.io/docs/other/environment-variables.html#tmpdir).
-
-**NB** if you are having trouble building the base box due to floppy drive removal errors try adding, as a
-workaround, `"post_shutdown_delay": "30s",` to the `windows-2016.json` file.
-
 
 You can then add the base box to your local vagrant installation with:
 
 ```bash
-vagrant box add -f windows-2016-amd64 windows-2016-amd64-virtualbox.box
+vagrant box add -f windows-server-core-1709 windows-server-core-1709-virtualbox.box
 ```
 
 And test this base box by launching an example Vagrant environment:
@@ -67,6 +57,13 @@ git clone https://github.com/rgl/customize-windows-vagrant
 cd customize-windows-vagrant
 vagrant up --provider=virtualbox # or --provider=libvirt
 ```
+
+# Troubleshooting
+
+**NB** if the build fails with something like `Post-processor failed: write /tmp/packer073329394/packer-windows-2016-amd64-virtualbox-1505050546-disk001.vmdk: no space left on device` you need to increase your temporary partition size or change its location [as described in the packer TMPDIR/TMP environment variable documentation](https://www.packer.io/docs/other/environment-variables.html#tmpdir).
+
+**NB** if you are having trouble building the base box due to floppy drive removal errors try adding, as a
+workaround, `"post_shutdown_delay": "30s",` to the `windows-server-2016.json` file.
 
 ## Build warnings
 

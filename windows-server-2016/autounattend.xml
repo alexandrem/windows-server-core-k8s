@@ -41,16 +41,14 @@
                     <InstallFrom>
                         <MetaData wcm:action="add">
                             <Key>/IMAGE/INDEX</Key>
-			    <!--< Value>Windows Server 2016 SERVERSTANDARDACORE</Value> -->
-		            <Value>3</Value>
+			    <!-- 4 = Datacenter with desktop experience -->
+		            <Value>4</Value>
                         </MetaData>
                     </InstallFrom>
                 </OSImage>
             </ImageInstall>
             <UserData>
                 <ProductKey>
-                    <!-- see https://blogs.windows.com/windowsexperience/2017/09/05/announcing-windows-server-insider-preview-build-16278/ -->
-                    <Key>V6N4W-86M3X-J77X3-JF6XW-D9PRV</Key>
                     <WillShowUI>OnError</WillShowUI>
                 </ProductKey>
                 <AcceptEula>true</AcceptEula>

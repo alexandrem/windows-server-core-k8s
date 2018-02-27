@@ -1,13 +1,13 @@
 {
   "variables": {
     "disk_size": "45000",
-    "iso_url": "./isos/Windows_InsiderPreview_Server_16278.iso",
-    "iso_checksum": "f87ebde2f4dc7094d2e01819d370cb8d06d2bcde520d3bdf9e8ce7e70a8ea5da",
-    "iso_checksum_type": "sha256"
+    "iso_url": "./isos/SW_DVD9_Win_Svr_STD_Core_and_DataCtr_Core_2016_64Bit_English_-3_MLF_X21-30350.ISO",
+    "iso_checksum": "eeb465c08cf7243dbaaa3be98f5f9e40",
+    "iso_checksum_type": "md5"
   },
   "builders": [
     {
-      "name": "windows-core-insider-2016-libvirt",
+      "name": "windows-server-2016-libvirt",
       "type": "qemu",
       "accelerator": "kvm",
       "qemuargs": [
@@ -39,7 +39,7 @@
       "shutdown_command": "shutdown /s /t 0 /f /d p:4:1 /c \"Packer Shutdown\"",
       "http_directory": ".",
       "floppy_files": [
-        "windows-core-insider-2016/autounattend.xml",
+        "windows-server-2016/autounattend.xml",
         "winrm.ps1",
         "drivers/vioserial/2k16/amd64/*.cat",
         "drivers/vioserial/2k16/amd64/*.inf",
@@ -56,7 +56,7 @@
       ]
     },
     {
-      "name": "windows-core-insider-2016-amd64-virtualbox",
+      "name": "windows-server-2016-virtualbox",
       "type": "virtualbox-iso",
       "guest_os_type": "Windows2016_64",
       "guest_additions_mode": "attach",
@@ -82,7 +82,7 @@
       "winrm_timeout": "2h",
       "shutdown_command": "shutdown /s /t 0 /f /d p:4:1 /c \"Packer Shutdown\"",
       "floppy_files": [
-        "windows-core-insider-2016/autounattend.xml",
+        "windows-server-2016/autounattend.xml",
         "winrm.ps1"
       ]
     }
@@ -90,18 +90,63 @@
   "provisioners": [
     {
       "type": "powershell",
+      "script": "scripts/disable-windows-updates.ps1"
+    },
+    {
+      "type": "powershell",
       "inline": "Uninstall-WindowsFeature Windows-Defender-Features"
     },
     {
       "type": "powershell",
-      "script": "virtualbox-prevent-vboxsrv-resolution-delay.ps1"
+      "script": "scripts/virtualbox-prevent-vboxsrv-resolution-delay.ps1"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/containers.ps1"
     },
     {
       "type": "windows-restart"
     },
     {
+      "type": "windows-update"
+    },
+    {
       "type": "powershell",
-      "script": "provision.ps1"
+      "script": "scripts/provision.ps1"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/kubernetes.ps1"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/sshd.ps1"
+    },
+    {
+      "type": "file",
+      "source": "./scripts/cloudbase-init/cloudbase-init.conf",
+      "destination": "C:/Windows/Temp/cloudbase-init.conf"
+    },
+    {
+      "type": "file",
+      "source": "./scripts/cloudbase-init/cloudbase-init-unattend.conf",
+      "destination": "C:/Windows/Temp/cloudbase-init-unattend.conf"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/cloudbase-init/install.ps1"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/cloudbase-init/cloudbase-config.ps1"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/inspect.ps1"
+    },
+    {
+      "type": "powershell",
+      "script": "scripts/cleanup.ps1"
     }
   ],
   "post-processors": [
