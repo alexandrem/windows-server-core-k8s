@@ -12,7 +12,7 @@ To be used for on-premise deployments of docker hosts or Kubernetes nodes.
 | ------------------------------ | ------- | ------ |
 | windows-server-core-1709       | 16299   | yes    |
 | windows-server-insider-preview | 17093   | yes    |
-| windows-server-2016            |         | no     |
+| windows-server-2016            | 14393   | no     |
 
 
 ## Status
