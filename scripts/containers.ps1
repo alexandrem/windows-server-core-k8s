@@ -5,6 +5,11 @@
 Write-Output "Installing Windows Containers feature..."
 Install-WindowsFeature -Name Containers
 
+Write-Output "Installing Hyper-V-Powershell..."
+Install-WindowsFeature -Name Hyper-V-Powershell
+Install-WindowsFeature -Name Hyper-V, RSAT-Hyper-V-Tools
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V
+
 Write-Output "Installing powershell NuGet provider..."
 Install-PackageProvider -Name NuGet -Force
 
