@@ -21,3 +21,8 @@ Write-Output "Installing Docker EE preview..."
 # Install-Package -Name docker -ProviderName DockerProvider -Force
 Install-Module -Name DockerProvider -Force
 Install-Package -Name docker -ProviderName DockerProvider -RequiredVersion Preview -Force
+
+
+Write-Output "Installing Hyper-V..."
+Enable-WindowsOptionalFeature -Online -FeatureName:Microsoft-Hyper-V -All -NoRestart
+Enable-WindowsOptionalFeature -Online -FeatureName:Microsoft-Hyper-V-Management-PowerShell -All -NoRestart
